@@ -4,15 +4,12 @@ const fs=require('fs');
 
 //const mainPath=path.join(__dirname, '..');
 exports.returnDirInfo=(req, res, next)=>{
-    //Accepts objects
     let mainPath=(req.body.path===undefined? path.join(__dirname, '..'):req.body.path);
-    // if(req.body.path!==undefined){
-    //     mainPath=path.join(mainPath);
-    //     console.log(mainPath);
-    // }
-
+    
+    //Accepts objects
     let dirStats= [];
     let permissions=[];
+    
     setTimeout(()=>{
         
         return res.status(200).json({
@@ -20,9 +17,8 @@ exports.returnDirInfo=(req, res, next)=>{
             allow: permissions
         });
     }, 1800);
+    
 
-    
-    
     fs.readdir(mainPath, (err, files)=>{
         if(err){
             throw err;
