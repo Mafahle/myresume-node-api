@@ -1,22 +1,39 @@
 const ResumeProfile = require('../models/resume-profile');
+const ContactDetails = require('../models/contact-details');
 
 exports.createResume = async (req, res, next) => {
     const name = req.body.name;
     const surname = req.body.surname;
-    const email = req.body.email;
+    const profession = req.body.profession;
+    const summary = req.body.summary;
 
-    console.log(req.body);
+    const phoneNumber = req.body.contactDetails.phoneNumber;
+    const email = req.body.contactDetails.email;
+    const linkedIn = req.body.contactDetails.linkedIn;
 
-    const newResume = ResumeProfile.build({
+    const newResume = await ResumeProfile.create({
         name: name,
         surname: surname,
-        email: email
+        profession: profession,
+        summary: summary,
+        contactDetails: JSON.stringify(req.body.contactDetails)
     });
 
-    await newResume.save();
+    const contactDetails = await ContactDetails.create({
+        id: newResume.id,
+        phoneNumber: phoneNumber,
+        email: email,
+        linkedIn: linkedIn
+    });
+
+    if (newResume && contactDetails) {
+        return res.json({
+            'message': 'Resume was successfully created.'
+        });
+    }
 
     res.json({
-        'message': 'Resume was successfully created.'
+        'message': 'Error: Resume couldn\'t be created.'
     });
 };
 

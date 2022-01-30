@@ -1,9 +1,9 @@
 const Sequelize = require('sequelize');
 const { DATABASE_PASSWORD } = require('../config');
 
-const sequelize = new Sequelize('myresume', 'postgres', `${DATABASE_PASSWORD}`, {
+const sequelize = new Sequelize('myresume', 'root', `${DATABASE_PASSWORD}`, {
   host: 'localhost',
-  dialect: 'postgres'
+  dialect: 'mysql'
 });
 
 module.exports = sequelize;

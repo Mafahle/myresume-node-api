@@ -1,17 +1,21 @@
-const { Sequelize, Model, DataTypes } = require('sequelize');
+const { Sequelize } = require('sequelize');
 const sequelize = require('../util/database');
 
-const ResumeProfile = sequelize.define('ResumeProfile', {
+const ResumeProfile = sequelize.define('resumeProfile', {
   id: {
     type: Sequelize.INTEGER,
     autoIncrement: true,
     allowNull: false,
     primaryKey: true
   },
-  name: { type: DataTypes.TEXT },
-  surname: { type: DataTypes.TEXT },
-  email: { type: DataTypes.TEXT }
+  name: Sequelize.STRING,
+  surname: Sequelize.STRING,
+  profession: Sequelize.STRING,
+  summary: Sequelize.STRING,
+  contactDetails: Sequelize.STRING
 });
+
+ResumeProfile.sync();
 
 module.exports = ResumeProfile;
 
