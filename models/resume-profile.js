@@ -12,10 +12,14 @@ const ResumeProfile = sequelize.define('resumeProfile', {
   surname: Sequelize.STRING,
   profession: Sequelize.STRING,
   summary: Sequelize.STRING,
-  contactDetails: Sequelize.STRING
+  contactDetails: Sequelize.JSON,
+  skills: Sequelize.JSON,
+  languages: Sequelize.JSON,
+  experience: Sequelize.JSON,
+  education: Sequelize.JSON
 });
 
-ResumeProfile.sync();
+ResumeProfile.sync({ alter: true });
 
 module.exports = ResumeProfile;
 

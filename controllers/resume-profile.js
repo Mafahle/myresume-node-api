@@ -1,39 +1,43 @@
 const ResumeProfile = require('../models/resume-profile');
-const ContactDetails = require('../models/contact-details');
 
+const htmlToPdf = require('html-pdf-node');
+
+const date = new Date();
 exports.createResume = async (req, res, next) => {
     const name = req.body.name;
     const surname = req.body.surname;
     const profession = req.body.profession;
     const summary = req.body.summary;
-
-    const phoneNumber = req.body.contactDetails.phoneNumber;
-    const email = req.body.contactDetails.email;
-    const linkedIn = req.body.contactDetails.linkedIn;
+    const contactDetails = req.body.contactDetails;
+    const skills = req.body.skills;
+    const languages = req.body.languages;
+    const experience = req.body.experience;
+    const education = req.body.education;
 
     const newResume = await ResumeProfile.create({
         name: name,
         surname: surname,
         profession: profession,
         summary: summary,
-        contactDetails: JSON.stringify(req.body.contactDetails)
+        contactDetails: contactDetails,
+        skills: skills,
+        languages: languages,
+        experience: experience,
+        education: education
     });
+    
+    const options = { format: 'A4', path: `./data/Myresume-${name}-${date.getUTCFullYear()}.pdf` };
+    const file = { url: 'https://react-bootstrap.github.io/forms/overview/' };
+    const pdfBuffer = await htmlToPdf.generatePdf(file, options);
 
-    const contactDetails = await ContactDetails.create({
-        id: newResume.id,
-        phoneNumber: phoneNumber,
-        email: email,
-        linkedIn: linkedIn
-    });
-
-    if (newResume && contactDetails) {
+    if (newResume && pdfBuffer) {
         return res.json({
             'message': 'Resume was successfully created.'
         });
     }
 
-    res.json({
-        'message': 'Error: Resume couldn\'t be created.'
+    return res.json({
+        'message': 'Error: Resume creation not successful.'
     });
 };
 
