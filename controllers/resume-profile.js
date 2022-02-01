@@ -1,4 +1,5 @@
 const ResumeProfile = require('../models/resume-profile');
+const { Op } = require('sequelize');
 
 const htmlToPdf = require('html-pdf-node');
 
@@ -30,7 +31,7 @@ exports.createResume = async (req, res, next) => {
     const file = { url: 'https://react-bootstrap.github.io/forms/overview/' };
     const pdfBuffer = await htmlToPdf.generatePdf(file, options);
 
-    if (newResume && pdfBuffer) {
+    if ((newResume !== null) && pdfBuffer) {
         return res.json({
             'message': 'Resume was successfully created.'
         });
@@ -39,6 +40,23 @@ exports.createResume = async (req, res, next) => {
     return res.json({
         'message': 'Error: Resume creation not successful.'
     });
+};
+
+exports.getTalentData = async (req, res, next) => {
+    const talentInfo = await ResumeProfile.findAll({ 
+        where: {
+            name: {
+                [Op.ne]: null
+            }
+        }
+    });
+
+    if(talentInfo){
+        res.json({
+            'message': 'Data request was successful',
+            'data': talentInfo
+        })
+    }
 };
 
 

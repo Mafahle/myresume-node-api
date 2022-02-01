@@ -1,4 +1,4 @@
-const DATABASE_PASSWORD = (process.env.DATABASE_PASSWORD ? process.env.DATABASE_PASSWORD : "Supercolour7");
+const DATABASE_PASSWORD = (process.env.DATABASE_PASSWORD ? process.env.DATABASE_PASSWORD : "123456ABC!");
 
 module.exports = {
   DATABASE_PASSWORD: DATABASE_PASSWORD
